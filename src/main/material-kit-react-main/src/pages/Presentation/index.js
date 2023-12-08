@@ -13,7 +13,7 @@ function HeaderOne() {
   const [file, setFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState(bgImage);
   const fileInputRef = useRef(null);
-
+ //
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
