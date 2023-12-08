@@ -38,11 +38,10 @@ out/
 
 
 # dependencies
-src/main/material-kit-react-main/node_modules
+/src/main/material-kit-react-main/node_modules
 .DS_Store
 
 # misc
-.DS_Store
 .env.local
 .env.development.local
 .env.test.local
