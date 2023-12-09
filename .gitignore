@@ -55,3 +55,4 @@ package-lock.json
 yarn.lock
 
 commit.sh
+/src/main/java/com/example/demo/Static/

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Model.HansaImageDAO">
+    <sql id="columns">
+        image_name
+        , image_path
+        , image_ocr
+        , image_translate
+    </sql>
+
+    <select id="selectByKey" parameterType="String" resultType="com.example.demo.Model.HansaImageVO">
+        SELECT *
+        FROM hansa_image
+        WHERE image_name = #{image_name}
+    </select>
+    <insert id="insert" parameterType="com.example.demo.Model.HansaImageVO">
+        INSERT INTO hansa_image(
+        <include refid="columns" />
+        )
+        VALUES (
+          #{image_name},
+          #{image_path},
+          NULL,
+          NULL
+        )
+    </insert>
+    <update id="updateOCR" parameterType="com.example.demo.Model.HansaImageVO">
+        UPDATE hansa_image
+        SET
+            image_ocr = #{image_ocr}
+        WHERE
+            image_name = #{image_name}
+    </update>
+    <update id="updateTL" parameterType="com.example.demo.Model.HansaImageVO">
+        UPDATE hansa_image
+        SET
+            image_translate = #{image_translate}
+        WHERE
+            image_name = #{image_name}
+    </update>
+    <delete id="delete" parameterType="String">
+        DELETE hansa_image
+        WHERE image_name = #{image_name}
+    </delete>
+</mapper>

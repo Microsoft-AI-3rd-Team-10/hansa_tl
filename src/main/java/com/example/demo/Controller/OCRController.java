@@ -1,8 +1,11 @@
 package com.example.demo.Controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import java.io.File;
@@ -13,8 +16,9 @@ import java.util.Base64;
 @CrossOrigin(origins = "*")
 public class OCRController {
 
-    @GetMapping("/api/image")
-    public String ocr () {
+    @GetMapping("/api/OCR")
+    @CrossOrigin(origins = "*")
+    public String ocr (@RequestParam("filename") String filename) {
         String apiUrl = "http://localhost:8000/byte";
         String inputImagePath = "C:\\Users\\a9491\\OneDrive\\Desktop\\EasyOCR\\demo\\000000000034951_016.jpg";
         String response_data = "";
@@ -47,7 +51,9 @@ public class OCRController {
             // Check the response status
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
 //                System.out.println("Response Data: " + responseBody);
-                response_data = responseEntity.getBody();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());
+                response_data = jsonNode.get("result").asText();
             } else {
                 System.out.println("API Error, Response code: " + responseEntity.getStatusCodeValue());
             }
