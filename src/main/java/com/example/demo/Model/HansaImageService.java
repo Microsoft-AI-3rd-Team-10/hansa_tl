@@ -13,7 +13,11 @@ public class HansaImageService {
         return mapper.selectByKey(image_name);
     };
     public void insertImage(HansaImageVO hansaInfo) {
-        mapper.insert(hansaInfo);
+        String image_key = hansaInfo.getImage_name();
+        HansaImageVO is_hansa = selectByKey(image_key);
+        if (is_hansa == null) {
+            mapper.insert(hansaInfo);
+        }
     };
     public void updateOCR(String filename, String text) {
         HansaImageVO hansaInfo = mapper.selectByKey(filename);

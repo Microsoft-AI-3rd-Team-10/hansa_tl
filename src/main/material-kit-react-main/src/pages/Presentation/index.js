@@ -19,6 +19,8 @@ function HeaderOne() {
   const [isImageUploadClick, setIsImageUploadClick] = useState(false);
   const [isOCRClick, setOCRClick] = useState(false);
   const [isTLClick, setTLClick] = useState(false);
+  const [loadingOCR, setLoadingOCR] = useState(false);
+  const [loadingTL, setLoadingTL] = useState(false);
   const fileInputRef = useRef(null);
   const ImageAddress = 'http://localhost:8080/api/img'
   const OCRAddress = 'http://localhost:8080/api/OCR'
@@ -55,56 +57,56 @@ function HeaderOne() {
       setIsImageUploadClick(true);
     }
   };
-  const handleOCRButtonClick = () => {
-    if (file && isImageUploadClick) {
-      setOCRClick(true);
-      const filename = file.name;
-      axios.get(OCRAddress, {
+    const handleOCRButtonClick = () => {
+      if (file && isImageUploadClick) {
+        setOCRClick(true);
+        setLoadingOCR(true); // Set loading state to true
+
+        const filename = file.name;
+        axios.get(OCRAddress, {
           params: {
             filename: filename,
           },
         })
-          .then((response) => {
-            setOCRTextContent(response.data); // Update state with fetched text data
+        .then((response) => {
+          setOCRTextContent(response.data); // Update state with fetched text data
+          setLoadingOCR(false); // Set loading state to false after successful response
+        })
+        .catch((error) => {
+          console.error('Error fetching text data:', error);
+          setLoadingOCR(false); // Set loading state to false on error
+        });
+      } else {
+        console.error('No file selected for OCR');
+      }
+    };
 
-          })
-          .catch((error) => {
-            console.error('Error fetching text data:', error);
-            // Handle error scenarios
-          });
+    const handleTSButtonClick = () => {
+      if (file && isOCRClick) {
+        setTLClick(true);
+        setLoadingTL(true); // Set loading state to true
 
-    } else {
-      // Handle the case when no file is selected
-      console.error('No file selected for OCR');
-    }
-  };
-
-  const handleTSButtonClick = () => {
-    if (file && isOCRClick) {
-      setTLClick(true);
-      const filename = file.name;
-      axios.get(TLAddress, {
+        const filename = file.name;
+        axios.get(TLAddress, {
           params: {
             filename: filename,
           },
         })
-          .then((response) => {
-            setTLTextContent(response.data); // Update state with fetched text data
-            setOCRClick(false);
-            setIsImageUploadClick(false);
-            setTLClick(false);
-          })
-          .catch((error) => {
-            console.error('Error fetching text data:', error);
-            // Handle error scenarios
-          });
-
-    } else {
-      // Handle the case when no file is selected
-      console.error('No file selected for TL');
-    }
-
-  };
+        .then((response) => {
+          setTLTextContent(response.data); // Update state with fetched text data
+          setLoadingTL(false); // Set loading state to false after successful response
+          setOCRClick(false);
+          setIsImageUploadClick(false);
+          setTLClick(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching text data:', error);
+          setLoadingTL(false); // Set loading state to false on error
+        });
+      } else {
+        console.error('No file selected for TL');
+      }
+    };
   const handleFileUploadButtonClick = (e) => {
       // Simulate a click on the hidden file input
 
@@ -304,8 +306,12 @@ function HeaderOne() {
                   <Grid item xs={12} md={6}>
                     <Stack spacing={2}>
                       {/* Text Box 1 */}
-                      <MKTypography variant="h4" color="light" fontWeight="bold">
-                        {OCRText}
+                      <MKTypography
+                      variant="h5"
+                      color="light"
+                      fontWeight="bold"
+                      sx={{ width: '300%', overflow: 'hidden'}}>
+                        <div dangerouslySetInnerHTML={{ __html: OCRText.replace(/\n/g, '<br>') }} />
                       </MKTypography>
                       <label>
                         <MKButton
@@ -314,10 +320,10 @@ function HeaderOne() {
                         >
                           OCR
                         </MKButton>
-                        {isOCRClick && !OCRText && (
+                        {loadingOCR && (
                             <CircularProgress
                               sx={{
-                                color: 'white',  // Set the color to white
+                                color: 'blue',  // Set the color to white
                                 marginLeft: '10px',  // Adjust horizontal spacing
                                 width: '24px',  // Set the width of the circular progress
                                 height: '24px',  // Set the height of the circular progress
@@ -328,18 +334,18 @@ function HeaderOne() {
                       </label>
                       {/* Text Box 2 */}
                       <MKTypography
-                        variant="h4"
+                        variant="h6"
                         color="white"
-                        mb={3}
+                        sx={{ mb: 8, width: '350%', overflow: 'hidden' }}
                       >
                         {TLText}
                       </MKTypography>
                       <label>
                       <MKButton color="light">번역</MKButton>
-                      {isTLClick && !TLText && (
+                      {loadingTL && (
                       <CircularProgress
                         sx={{
-                          color: 'white',  // Set the color to white
+                          color: 'blue',  // Set the color to white
                           marginLeft: '10px',  // Adjust horizontal spacing
                           width: '24px',  // Set the width of the circular progress
                           height: '24px',  // Set the height of the circular progress

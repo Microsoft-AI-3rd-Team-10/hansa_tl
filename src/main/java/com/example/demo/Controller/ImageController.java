@@ -53,8 +53,6 @@ public class ImageController {
             HansaImageVO hansaImage = new HansaImageVO();
             hansaImage.setImage_name(filename);
             hansaImage.setImage_path(filePath);
-            hansaImage.setImage_translate(null);
-            hansaImage.setImage_ocr(null);
             service.insertImage(hansaImage);
 
             // For simplicity, let's just return a success message

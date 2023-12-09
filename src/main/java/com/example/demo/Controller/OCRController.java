@@ -1,7 +1,10 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Model.HansaImageService;
+import com.example.demo.Model.HansaImageVO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +19,17 @@ import java.util.Base64;
 @CrossOrigin(origins = "*")
 public class OCRController {
 
+    @Autowired
+    HansaImageService service;
+
     @GetMapping("/api/OCR")
     @CrossOrigin(origins = "*")
     public String ocr (@RequestParam("filename") String filename) {
         String apiUrl = "http://localhost:8000/byte";
-        String inputImagePath = "C:\\Users\\a9491\\OneDrive\\Desktop\\EasyOCR\\demo\\000000000034951_016.jpg";
+
+        HansaImageVO hansa_image = service.selectByKey(filename);
+        String inputImagePath = hansa_image.getImage_path();
+
         String response_data = "";
         try {
             File imageFile = new File(inputImagePath);
@@ -54,6 +63,7 @@ public class OCRController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());
                 response_data = jsonNode.get("result").asText();
+                service.updateOCR(filename, response_data);
             } else {
                 System.out.println("API Error, Response code: " + responseEntity.getStatusCodeValue());
             }
