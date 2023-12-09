@@ -18,8 +18,8 @@ import java.nio.file.StandardCopyOption;
 @RestController
 @CrossOrigin(origins = "*")
 public class ImageController {
-    private static final String UPLOAD_DIR = "src" + File.separator + "main" + File.separator + "java" +
-            File.separator + "com" + File.separator + "example" + File.separator + "demo" + File.separator + "Static" + File.separator;
+    private static final String UPLOAD_DIR = "src" + File.separator + "main" + File.separator + "resources" +
+            File.separator + "Static" + File.separator;
 
     @Autowired
     HansaImageService service;
@@ -53,6 +53,8 @@ public class ImageController {
             HansaImageVO hansaImage = new HansaImageVO();
             hansaImage.setImage_name(filename);
             hansaImage.setImage_path(filePath);
+            hansaImage.setImage_translate(null);
+            hansaImage.setImage_ocr(null);
             service.insertImage(hansaImage);
 
             // For simplicity, let's just return a success message
