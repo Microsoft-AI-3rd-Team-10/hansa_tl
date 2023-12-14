@@ -20,6 +20,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 }
 

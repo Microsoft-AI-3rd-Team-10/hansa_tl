@@ -57,3 +57,4 @@ yarn.lock
 commit.sh
 /src/main/resources/Static/
 lombok.config
+.env

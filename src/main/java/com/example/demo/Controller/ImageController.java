@@ -35,9 +35,9 @@ public class ImageController {
             }
 
             // Sanitize and validate filename
-            if (!filename.matches("[a-zA-Z0-9_-]+\\.(jpg|jpeg|png)")) {
-                return ResponseEntity.badRequest().body("Invalid filename");
-            }
+//            if (!filename.matches("[a-zA-Z0-9_-]+\\.(jpg|jpeg|png)")) {
+//                return ResponseEntity.badRequest().body("Invalid filename");
+//            }
 
             File uploadDir = new File(UPLOAD_DIR);
             if (!uploadDir.exists()) {

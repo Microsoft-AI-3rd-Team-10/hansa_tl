@@ -24,7 +24,7 @@ function HeaderOne() {
   const fileInputRef = useRef(null);
   const ImageAddress = 'http://localhost:8080/api/img'
   const OCRAddress = 'http://localhost:8080/api/OCR'
-  const TLAddress = 'http://localhost:8080/api/TL'
+  const TLAddress = 'http://localhost:8080/api/tl'
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -341,7 +341,7 @@ function HeaderOne() {
                         {TLText}
                       </MKTypography>
                       <label>
-                      <MKButton color="light">번역</MKButton>
+                      <MKButton color="light" onClick={handleTSButtonClick}>번역</MKButton>
                       {loadingTL && (
                       <CircularProgress
                         sx={{
