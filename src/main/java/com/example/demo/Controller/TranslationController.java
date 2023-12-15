@@ -31,16 +31,18 @@ public class TranslationController {
         String prompt = "Translate the following Chinese characters to Korean, ensuring a formal tone," +
                 "avoiding the use of foreign words.\n" +
                 "Put a punctuation mark at the end of each sentence.\n" +
-                "Provide only the translated text.\n"+
-                context;
+                "Provide only the translated text.\n";
+
+
 
         try {
-            String token = System.getenv("API_KEY");
-            OpenAiService service = new OpenAiService(token, Duration.ofSeconds(60));
+//            String token = System.getenv("API_KEY");
+            OpenAiService service = new OpenAiService("", Duration.ofSeconds(60));
 
             final List<ChatMessage> messages = new ArrayList<>();
-            final ChatMessage systemMessage = new ChatMessage("user", prompt);
+            final ChatMessage systemMessage = new ChatMessage("system", prompt);
             messages.add(systemMessage);
+            messages.add(new ChatMessage("user", context));
             ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                     .builder()
                     .model("gpt-4")

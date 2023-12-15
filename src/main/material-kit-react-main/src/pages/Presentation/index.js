@@ -16,9 +16,6 @@ function HeaderOne() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState(bgImage);
   const [OCRText,setOCRTextContent] = useState("漢字");
   const [TLText,setTLTextContent] = useState("한글");
-  const [isImageUploadClick, setIsImageUploadClick] = useState(false);
-  const [isOCRClick, setOCRClick] = useState(false);
-  const [isTLClick, setTLClick] = useState(false);
   const [loadingOCR, setLoadingOCR] = useState(false);
   const [loadingTL, setLoadingTL] = useState(false);
   const fileInputRef = useRef(null);
@@ -54,12 +51,11 @@ function HeaderOne() {
           console.error('Error uploading image:', error);
           // Handle error scenarios
         });
-      setIsImageUploadClick(true);
     }
   };
     const handleOCRButtonClick = () => {
-      if (file && isImageUploadClick) {
-        setOCRClick(true);
+      if (file) {
+
         setLoadingOCR(true); // Set loading state to true
 
         const filename = file.name;
@@ -82,8 +78,8 @@ function HeaderOne() {
     };
 
     const handleTSButtonClick = () => {
-      if (file && isOCRClick) {
-        setTLClick(true);
+      if (file) {
+
         setLoadingTL(true); // Set loading state to true
 
         const filename = file.name;
@@ -95,9 +91,6 @@ function HeaderOne() {
         .then((response) => {
           setTLTextContent(response.data); // Update state with fetched text data
           setLoadingTL(false); // Set loading state to false after successful response
-          setOCRClick(false);
-          setIsImageUploadClick(false);
-          setTLClick(false);
         })
         .catch((error) => {
           console.error('Error fetching text data:', error);
